@@ -16,6 +16,20 @@ export function formatTokens(n: number): string {
 }
 
 /**
+ * Format token count with K/M units and always 2 decimal places (for animations)
+ * Examples: 850 → "850", 1234 → "1.23K", 12500 → "12.50K", 1234567 → "1.23M"
+ */
+export function formatTokensDecimal(n: number): string {
+  if (n < 1000) return String(Math.round(n))
+  if (n < 1_000_000) {
+    const k = n / 1000
+    return `${k.toFixed(2)}K`
+  }
+  const m = n / 1_000_000
+  return `${m.toFixed(2)}M`
+}
+
+/**
  * Calculate the USD cost of a request based on token usage and model pricing.
  * Prices in AIModelConfig are per **million** tokens.
  * Returns null if pricing info is unavailable.

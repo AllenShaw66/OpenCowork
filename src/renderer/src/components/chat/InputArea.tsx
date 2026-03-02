@@ -16,8 +16,8 @@ import {
 } from 'lucide-react'
 import { nanoid } from 'nanoid'
 import { Button } from '@renderer/components/ui/button'
-import { Spinner } from '@renderer/components/ui/spinner'
 import { Textarea } from '@renderer/components/ui/textarea'
+import { Spinner } from '@renderer/components/ui/spinner'
 import { Tooltip, TooltipContent, TooltipTrigger } from '@renderer/components/ui/tooltip'
 import { useProviderStore } from '@renderer/stores/provider-store'
 import type { AIModelConfig, ReasoningEffortLevel } from '@renderer/lib/api/types'
@@ -26,7 +26,7 @@ import { useSettingsStore } from '@renderer/stores/settings-store'
 import { updateWebSearchToolRegistration } from '@renderer/lib/tools'
 import { useUIStore, type AppMode } from '@renderer/stores/ui-store'
 import { formatTokens } from '@renderer/lib/format-tokens'
-import { useDebouncedTokens } from '@renderer/hooks/use-estimated-tokens'
+import { useDebouncedTokens, useMemoizedTokens } from '@renderer/hooks/use-estimated-tokens'
 import { useChatStore } from '@renderer/stores/chat-store'
 import { useTranslation } from 'react-i18next'
 import { SkillsMenu } from './SkillsMenu'
@@ -291,6 +291,7 @@ export function InputArea({
   const draftBySessionRef = React.useRef<
     Record<string, { text: string; images: ImageAttachment[]; skill: string | null }>
   >({})
+
   const activeProvider = useProviderStore((s) => {
     const { providers, activeProviderId } = s
     if (!activeProviderId) return null
@@ -619,6 +620,7 @@ export function InputArea({
     if (!trimmed && attachedImages.length === 0) return
     if (disabled || needsWorkingFolder) return
     const message = selectedSkill ? `[Skill: ${selectedSkill}]\n${trimmed}` : trimmed
+
     onSend(message, attachedImages.length > 0 ? attachedImages : undefined)
     updateSessionHistory((prevHistory) => {
       const nextHistory = [
@@ -1226,12 +1228,12 @@ export function InputArea({
                 <Tooltip>
                   <TooltipTrigger asChild>
                     <Button
-                      variant="destructive"
+                      variant="outline"
                       size="icon"
-                      className="size-8 rounded-lg"
+                      className="size-8 rounded-lg bg-amber-50 dark:bg-amber-950/30 border-amber-200 dark:border-amber-800 hover:bg-amber-100 dark:hover:bg-amber-900/40"
                       onClick={onStop}
                     >
-                      <Spinner className="size-4 text-white" />
+                      <Spinner className="size-4 text-amber-600 dark:text-amber-400" />
                     </Button>
                   </TooltipTrigger>
                   <TooltipContent>{t('input.stopTooltip')}</TooltipContent>
