@@ -3,6 +3,11 @@
 All notable changes to **OpenCowork** will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/).
 
+## [0.3.6] - 2026-03-03
+
+### Changed
+- **Routin AI MiniMax models** — Updated MiniMax M2.1, M2.1 Lightning, M2.5, and M2.5 Highspeed configurations with enhanced pricing structures, caching support (cache creation and hit prices), increased context lengths (up to 204,800 tokens), expanded output token limits (up to 131,072), and Anthropic protocol compatibility for improved performance and cost efficiency.
+
 ## [0.3.5] - 2026-03-03
 
 ### Added
