@@ -204,7 +204,23 @@ export const IPC = {
   SSH_AUTH_INSTALL_PUBLIC_KEY: 'ssh:auth:install-public-key',
 
   // SSH Remote Exec
-  SSH_EXEC: 'ssh:exec'
+  SSH_EXEC: 'ssh:exec',
+
+  // Telnet Management
+  TELNET_CONNECTION_LIST: 'telnet:connection:list',
+  TELNET_CONNECTION_CREATE: 'telnet:connection:create',
+  TELNET_CONNECTION_UPDATE: 'telnet:connection:update',
+  TELNET_CONNECTION_DELETE: 'telnet:connection:delete',
+  TELNET_CONNECTION_TEST: 'telnet:connection:test',
+
+  // Telnet Sessions
+  TELNET_CONNECT: 'telnet:connect',
+  TELNET_DISCONNECT: 'telnet:disconnect',
+  TELNET_DATA: 'telnet:data',
+  TELNET_OUTPUT: 'telnet:output',
+  TELNET_STATUS: 'telnet:status',
+  TELNET_SESSION_LIST: 'telnet:session:list',
+  TELNET_OUTPUT_BUFFER: 'telnet:output:buffer'
 } as const
 
 export type IPCChannel = (typeof IPC)[keyof typeof IPC]

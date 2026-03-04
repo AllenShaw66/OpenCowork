@@ -467,6 +467,7 @@ function HighlightItem<T extends React.ElementType>({
     } else if (!activeValue) clearBounds();
 
     if (shouldUpdateBounds) return () => cancelAnimationFrame(rafId);
+    return undefined;
   }, [
     mode,
     isActive,

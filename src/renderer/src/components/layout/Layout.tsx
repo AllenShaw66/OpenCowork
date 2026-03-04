@@ -22,6 +22,7 @@ import { ChatHomePage } from '@renderer/components/chat/ChatHomePage'
 import { SkillsPage } from '@renderer/components/skills/SkillsPage'
 import { TranslatePage } from '@renderer/components/translate/TranslatePage'
 import { SshPage } from '@renderer/components/ssh/SshPage'
+import { TelnetPage } from '@renderer/components/telnet/TelnetPage'
 import { KeyboardShortcutsDialog } from '@renderer/components/settings/KeyboardShortcutsDialog'
 import { PermissionDialog } from '@renderer/components/cowork/PermissionDialog'
 import { CommandPalette } from './CommandPalette'
@@ -196,6 +197,9 @@ export function Layout(): React.JSX.Element {
   const skillsPageOpen = useUIStore((s) => s.skillsPageOpen)
   const translatePageOpen = useUIStore((s) => s.translatePageOpen)
   const sshPageOpen = useUIStore((s) => s.sshPageOpen)
+  const telnetPageOpen = useUIStore((s) => s.telnetPageOpen)
+  const telnetPageEverOpened = useRef(false)
+  if (telnetPageOpen) telnetPageEverOpened.current = true
   const sshPageEverOpened = useRef(false)
   if (sshPageOpen) sshPageEverOpened.current = true
   const toggleLeftSidebar = useUIStore((s) => s.toggleLeftSidebar)
@@ -608,8 +612,18 @@ export function Layout(): React.JSX.Element {
             </div>
           )}
 
-          {/* Main content area (hidden when SSH page is active) */}
-          {!sshPageOpen && (
+          {/* Telnet page */}
+          {telnetPageEverOpened.current && (
+            <div
+              className="flex-1 min-w-0 bg-background overflow-hidden"
+              style={{ display: telnetPageOpen ? undefined : 'none' }}
+            >
+              <TelnetPage />
+            </div>
+          )}
+
+          {/* Main content area (hidden when Telnet/SSH page is active) */}
+          {!telnetPageOpen && !sshPageOpen && (
           <AnimatePresence mode="wait">
             {skillsPageOpen ? (
               <PageTransition key="skills-page" className="flex-1 min-w-0 bg-background overflow-hidden">

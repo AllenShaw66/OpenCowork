@@ -33,11 +33,7 @@ import {
 import type { UnifiedMessage, ProviderConfig } from '@renderer/lib/api/types'
 import type { AgentLoopConfig } from '@renderer/lib/agent/types'
 import type { ToolContext } from '@renderer/lib/tools/tool-types'
-import {
-  hasActiveSessionRunForSession,
-  hasPendingSessionMessagesForSession,
-  dispatchNextQueuedMessageForSession
-} from '@renderer/hooks/use-chat-actions'
+import { hasPendingSessionMessagesForSession } from '@renderer/hooks/use-chat-actions'
 
 interface PluginAutoReplyTask {
   sessionId: string
@@ -682,8 +678,8 @@ async function _runPluginAgent(task: PluginAutoReplyTask): Promise<void> {
  * Idempotent — safe to call multiple times.
  */
 export function initPluginAutoReplyListener(): void {
-  if (window.__pluginAutoReplyListenerActive) return
-  window.__pluginAutoReplyListenerActive = true
+  if (window.__pluginListenerActive) return
+  window.__pluginListenerActive = true
 
   window.addEventListener('plugin:auto-reply-task', (e: Event) => {
     const task = (e as CustomEvent<PluginAutoReplyTask>).detail

@@ -1,5 +1,4 @@
 import { toolRegistry } from './tool-registry'
-import { subAgentRegistry } from './sub-agents/registry'
 
 /**
  * Build a system prompt for the agent loop that includes tool descriptions
@@ -30,7 +29,6 @@ export function buildSystemPrompt(options: {
   } = options
 
   const toolDefs = options.toolDefs ?? toolRegistry.getDefinitions()
-  const toolList = toolDefs.map((t) => `- **${t.name}**: ${t.description}`).join('\n')
 
   const parts: string[] = []
 
@@ -272,28 +270,28 @@ export function buildSystemPrompt(options: {
     }
 
     // ── Global Memory (MEMORY.md) ──
-  const memoryPath = globalMemoryPath?.trim()
-  const memoryPathLabel = memoryPath ? `\`${memoryPath}\`` : 'path unavailable'
+    const memoryPath = globalMemoryPath?.trim()
+    const memoryPathLabel = memoryPath ? `\`${memoryPath}\`` : 'path unavailable'
 
-  if (globalMemory?.trim()) {
+    if (globalMemory?.trim()) {
+      parts.push(
+        `\n<global_memory>`,
+        `The following is MEMORY.md from ${memoryPathLabel}, containing cross-session durable memory.`,
+        ``,
+        globalMemory.trim(),
+        `</global_memory>`
+      )
+    }
+
+    // ── Global MEMORY.md File Management ──
     parts.push(
-      `\n<global_memory>`,
-      `The following is MEMORY.md from ${memoryPathLabel}, containing cross-session durable memory.`,
-      ``,
-      globalMemory.trim(),
-      `</global_memory>`
+      `\n<global_memory_file>`,
+      `Global memory file: ${memoryPathLabel} for durable, cross-session info.`,
+      `Store stable user preferences, durable decisions/workflow habits, long-lived defaults, and explicit "remember this" requests.`,
+      `Do not store secrets, temporary notes, or project-specific details (use AGENTS.md).`,
+      `Update by reading first, then append/adjust concise entries and remove outdated ones.`,
+      `</global_memory_file>`
     )
-  }
-
-  // ── Global MEMORY.md File Management ──
-  parts.push(
-    `\n<global_memory_file>`,
-    `Global memory file: ${memoryPathLabel} for durable, cross-session info.`,
-    `Store stable user preferences, durable decisions/workflow habits, long-lived defaults, and explicit "remember this" requests.`,
-    `Do not store secrets, temporary notes, or project-specific details (use AGENTS.md).`,
-    `Update by reading first, then append/adjust concise entries and remove outdated ones.`,
-    `</global_memory_file>`
-  )
 
     // ── AGENTS.md Memory File Management ──
     if (workingFolder) {
@@ -316,7 +314,7 @@ export function buildSystemPrompt(options: {
         `</user_rules>`
       )
     }
-
-    return parts.join('\n')
   }
+
+  return parts.join('\n')
 }

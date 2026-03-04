@@ -146,7 +146,8 @@ function waitForCallback(
     let done = false
     let timer: ReturnType<typeof setTimeout> | null = null
 
-    const stop = ipcClient.on(IPC.OAUTH_CALLBACK, (payload: OAuthCallbackPayload) => {
+    const stop = ipcClient.on(IPC.OAUTH_CALLBACK, (...args: unknown[]) => {
+      const payload = args[0] as OAuthCallbackPayload
       if (payload.requestId !== requestId) return
       cleanup()
       resolve(payload)

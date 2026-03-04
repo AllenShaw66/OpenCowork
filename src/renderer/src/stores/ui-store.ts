@@ -4,7 +4,7 @@ import { create } from 'zustand'
 
 export type AppMode = 'chat' | 'cowork' | 'code'
 
-export type NavItem = 'chat' | 'plugins' | 'skills' | 'translate' | 'ssh'
+export type NavItem = 'chat' | 'plugins' | 'skills' | 'translate' | 'ssh' | 'telnet'
 
 export type ChatView = 'home' | 'session'
 
@@ -99,6 +99,9 @@ interface UIStore {
   openSshPage: () => void
   closeSshPage: () => void
 
+  telnetPageOpen: boolean
+  openTelnetPage: () => void
+  closeTelnetPage: () => void
 
 
   shortcutsOpen: boolean
@@ -236,6 +239,17 @@ export const useUIStore = create<UIStore>((set) => ({
     leftSidebarOpen: false,
   }),
   closeSshPage: () => set({ sshPageOpen: false }),
+
+  telnetPageOpen: false,
+  openTelnetPage: () => set({
+    telnetPageOpen: true,
+    settingsPageOpen: false,
+    skillsPageOpen: false,
+    translatePageOpen: false,
+    sshPageOpen: false,
+    leftSidebarOpen: false,
+  }),
+  closeTelnetPage: () => set({ telnetPageOpen: false }),
 
 
 

@@ -36,6 +36,7 @@ import { loadPersistedJobs, cancelAllJobs } from './cron/cron-scheduler'
 import { McpManager } from './mcp/mcp-manager'
 import { closeDb } from './db/database'
 import { registerSshHandlers, closeAllSshSessions } from './ipc/ssh-handlers'
+import { registerTelnetHandlers } from './ipc/telnet-handlers'
 import { writeCrashLog, getCrashLogDir } from './crash-logger'
 import { setupAutoUpdater } from './updater'
 
@@ -434,6 +435,7 @@ if (gotSingleInstanceLock) {
   registerDbHandlers()
   registerConfigHandlers()
   registerSshHandlers()
+  registerTelnetHandlers()
   registerPluginHandlers(pluginManager)
   registerMcpHandlers(mcpManager)
   registerCronHandlers()

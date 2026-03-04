@@ -1,4 +1,4 @@
-import { Languages, MessageSquare, Monitor, Settings, Wand2 } from 'lucide-react'
+﻿import { Languages, MessageSquare, Monitor, Settings, Wand2, Network } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import { Tooltip, TooltipContent, TooltipTrigger } from '@renderer/components/ui/tooltip'
 import { useUIStore, type NavItem } from '@renderer/stores/ui-store'
@@ -10,6 +10,7 @@ const navItems: { value: NavItem; icon: React.ReactNode; labelKey: string }[] = 
   { value: 'skills', icon: <Wand2 className="size-5" />, labelKey: 'navRail.skills' },
   { value: 'translate', icon: <Languages className="size-5" />, labelKey: 'navRail.translate' },
   { value: 'ssh', icon: <Monitor className="size-5" />, labelKey: 'navRail.ssh' },
+  { value: 'telnet', icon: <Network className="size-5" />, labelKey: 'navRail.telnet' },
 ]
 
 export function NavRail(): React.JSX.Element {
@@ -20,33 +21,40 @@ export function NavRail(): React.JSX.Element {
   const skillsPageOpen = useUIStore((s) => s.skillsPageOpen)
   const translatePageOpen = useUIStore((s) => s.translatePageOpen)
   const sshPageOpen = useUIStore((s) => s.sshPageOpen)
+  const telnetPageOpen = useUIStore((s) => s.telnetPageOpen)
 
   const handleNavClick = (item: NavItem): void => {
-    if (item === 'skills') {
-      useUIStore.getState().openSkillsPage()
-      return
-    }
-    if (item === 'translate') {
-      useUIStore.getState().openTranslatePage()
-      return
-    }
-    if (item === 'ssh') {
-      useUIStore.getState().openSshPage()
-      return
-    }
-    // Close skills/settings pages when navigating to chat
     const ui = useUIStore.getState()
-    if (ui.settingsPageOpen) ui.closeSettingsPage()
+    // Close any open special pages first
     if (ui.skillsPageOpen) ui.closeSkillsPage()
     if (ui.translatePageOpen) ui.closeTranslatePage()
     if (ui.sshPageOpen) ui.closeSshPage()
+    if (ui.telnetPageOpen) ui.closeTelnetPage()
+
+    if (item === 'skills') {
+      ui.openSkillsPage()
+      return
+    }
+    if (item === 'translate') {
+      ui.openTranslatePage()
+      return
+    }
+    if (item === 'ssh') {
+      ui.openSshPage()
+      return
+    }
+    if (item === 'telnet') {
+      ui.openTelnetPage()
+      return
+    }
+
+    // For chat, navigate normally
     if (activeNavItem === item && leftSidebarOpen) {
-      useUIStore.getState().setLeftSidebarOpen(false)
+      ui.setLeftSidebarOpen(false)
     } else {
       setActiveNavItem(item)
-      // Open sidebar if it's closed
       if (!leftSidebarOpen) {
-        useUIStore.getState().setLeftSidebarOpen(true)
+        ui.setLeftSidebarOpen(true)
       }
     }
   }
@@ -65,6 +73,7 @@ export function NavRail(): React.JSX.Element {
                   (item.value === 'skills' && skillsPageOpen) ||
                   (item.value === 'translate' && translatePageOpen) ||
                   (item.value === 'ssh' && sshPageOpen) ||
+                  (item.value === 'telnet' && telnetPageOpen) ||
                   (!['skills', 'translate', 'ssh'].includes(item.value) && activeNavItem === item.value && leftSidebarOpen)
                     ? 'bg-primary/10 text-primary shadow-sm'
                     : 'text-muted-foreground hover:bg-muted hover:text-foreground'
@@ -99,3 +108,4 @@ export function NavRail(): React.JSX.Element {
     </div>
   )
 }
+

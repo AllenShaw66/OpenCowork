@@ -178,6 +178,7 @@
     "skills": "Skills",
     "translate": "Translate",
     "ssh": "SSH",
+    "telnet": "Telnet",
     "settings": "Settings"
   },
   "translatePage": {
