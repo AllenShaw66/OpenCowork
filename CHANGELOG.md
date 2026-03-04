@@ -3,6 +3,21 @@
 All notable changes to **OpenCowork** will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/).
 
+## [0.3.6] - 2026-03-03
+
+### Changed
+- **Routin AI MiniMax models** — Updated MiniMax M2.1, M2.1 Lightning, M2.5, and M2.5 Highspeed configurations with enhanced pricing structures, caching support (cache creation and hit prices), increased context lengths (up to 204,800 tokens), expanded output token limits (up to 131,072), and Anthropic protocol compatibility for improved performance and cost efficiency.
+
+## [0.3.5] - 2026-03-03
+
+### Added
+- **Animated token counter** — new `TokenCounter` component with smooth requestAnimationFrame-based counting animation for real-time token usage feedback during message send/receive.
+- **Loading indicator with state awareness** — `LoadingIndicator` component showing ↑/↓ arrows with state-aware token display (sending/waiting/receiving states).
+- **Token formatting helper** — `formatTokensDecimal()` function providing consistent 2-decimal formatting for animated token counts (e.g., "1.23K", "12.50K").
+
+### Changed
+- **Stop button styling** — improved stop button visual design with amber theme instead of destructive red, providing better visual hierarchy and less alarming appearance.
+
 ## [0.3.4] - 2026-03-03
 
 ### Added

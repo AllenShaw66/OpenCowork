@@ -3,7 +3,6 @@ import {
   Settings,
   Sun,
   Moon,
-  Keyboard,
   Brain,
   Users,
   Terminal,
@@ -37,7 +36,6 @@ export function TitleBar(): React.JSX.Element {
   const isMac = /Mac/.test(navigator.userAgent)
   const openDetailPanel = useUIStore((s) => s.openDetailPanel)
   const setSettingsOpen = useUIStore((s) => s.setSettingsOpen)
-  const setShortcutsOpen = useUIStore((s) => s.setShortcutsOpen)
   const { theme, setTheme } = useTheme()
 
   const userAvatar = useSettingsStore((s) => s.userAvatar)
@@ -171,7 +169,7 @@ export function TitleBar(): React.JSX.Element {
   return (
     <header
       className={cn(
-        'titlebar-drag relative flex h-10 w-full shrink-0 items-center gap-2 overflow-hidden border-b bg-background/80 backdrop-blur-md px-3',
+        'titlebar-drag relative flex h-10 w-full shrink-0 items-center gap-2 overflow-hidden bg-background/80 backdrop-blur-md px-3',
         isMac ? 'pl-[78px]' : 'pr-[132px]'
       )}
     >
@@ -460,21 +458,6 @@ export function TitleBar(): React.JSX.Element {
           </Popover>
         )}
 
-        {/* Keyboard Shortcuts */}
-        <Tooltip>
-          <TooltipTrigger asChild>
-            <Button
-              variant="ghost"
-              size="icon"
-              className="titlebar-no-drag size-7"
-              onClick={() => setShortcutsOpen(true)}
-            >
-              <Keyboard className="size-4" />
-            </Button>
-          </TooltipTrigger>
-          <TooltipContent>{t('topbar.shortcuts')}</TooltipContent>
-        </Tooltip>
-
         {/* Help */}
         <Tooltip>
           <TooltipTrigger asChild>
@@ -490,20 +473,6 @@ export function TitleBar(): React.JSX.Element {
           <TooltipContent>{t('topbar.help', { defaultValue: 'Help Center' })}</TooltipContent>
         </Tooltip>
 
-        {/* Settings */}
-        <Tooltip>
-          <TooltipTrigger asChild>
-            <Button
-              variant="ghost"
-              size="icon"
-              className="titlebar-no-drag size-7"
-              onClick={() => setSettingsOpen(true)}
-            >
-              <Settings className="size-4" />
-            </Button>
-          </TooltipTrigger>
-          <TooltipContent>{t('topbar.settings')}</TooltipContent>
-        </Tooltip>
       </div>
 
       {/* Window Controls (Windows/Linux only) */}

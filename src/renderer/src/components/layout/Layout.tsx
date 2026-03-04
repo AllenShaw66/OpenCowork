@@ -589,102 +589,113 @@ export function Layout(): React.JSX.Element {
         {/* Full-width title bar */}
         <TitleBar />
 
-        <div className="flex flex-1 overflow-hidden">
-          {/* Narrow icon nav rail */}
-          <NavRail />
+        <div className="flex flex-1 overflow-hidden px-1 pt-1 pb-1.5">
+          <div className="flex flex-1 overflow-hidden rounded-xl border border-border/60 bg-background/85 shadow-[0_12px_40px_-20px_rgba(0,0,0,0.55)] backdrop-blur-sm">
+            {/* Narrow icon nav rail */}
+            <NavRail />
 
-          {/* Session list panel */}
-          <AnimatePresence>
-            {leftSidebarOpen && (
-              <PanelTransition side="left" disabled={false} className="h-full z-10">
-                <SessionListPanel />
-              </PanelTransition>
+            {/* Session list panel */}
+            <AnimatePresence>
+              {leftSidebarOpen && (
+                <PanelTransition side="left" disabled={false} className="h-full z-10">
+                  <SessionListPanel />
+                </PanelTransition>
+              )}
+            </AnimatePresence>
+
+            {/* SSH page – always mounted after first visit, hidden via CSS to preserve xterm buffers */}
+            {sshPageEverOpened.current && (
+              <div
+                className="flex-1 min-w-0 bg-background overflow-hidden"
+                style={{ display: sshPageOpen ? undefined : 'none' }}
+              >
+                <SshPage />
+              </div>
             )}
-          </AnimatePresence>
 
-          {/* SSH page – always mounted after first visit, hidden via CSS to preserve xterm buffers */}
-          {sshPageEverOpened.current && (
-            <div
-              className="flex-1 min-w-0 bg-background overflow-hidden"
-              style={{ display: sshPageOpen ? undefined : 'none' }}
-            >
-              <SshPage />
-            </div>
-          )}
+            {/* SSH page – always mounted after first visit, hidden via CSS to preserve xterm buffers */}
+            {sshPageEverOpened.current && (
+              <div
+                className="flex-1 min-w-0 bg-background overflow-hidden"
+                style={{ display: sshPageOpen ? undefined : 'none' }}
+              >
+                <SshPage />
+              </div>
+            )}
 
-          {/* Telnet page */}
-          {telnetPageEverOpened.current && (
-            <div
-              className="flex-1 min-w-0 bg-background overflow-hidden"
-              style={{ display: telnetPageOpen ? undefined : 'none' }}
-            >
-              <TelnetPage />
-            </div>
-          )}
+            {/* Telnet page */}
+            {telnetPageEverOpened.current && (
+              <div
+                className="flex-1 min-w-0 bg-background overflow-hidden"
+                style={{ display: telnetPageOpen ? undefined : 'none' }}
+              >
+                <TelnetPage />
+              </div>
+            )}
 
-          {/* Main content area (hidden when Telnet/SSH page is active) */}
-          {!telnetPageOpen && !sshPageOpen && (
-          <AnimatePresence mode="wait">
-            {skillsPageOpen ? (
-              <PageTransition key="skills-page" className="flex-1 min-w-0 bg-background overflow-hidden">
-                <SkillsPage />
-              </PageTransition>
-            ) : settingsPageOpen ? (
-              <PageTransition key="settings-page" className="flex-1 min-w-0 bg-background overflow-hidden">
-                <SettingsPage />
-              </PageTransition>
-            ) : translatePageOpen ? (
-              <PageTransition key="translate-page" className="flex-1 min-w-0 bg-background overflow-hidden">
-                <TranslatePage />
-              </PageTransition>
-            ) : chatView === 'home' ? (
-              <PageTransition key="chat-home" className="flex flex-1 min-w-0 flex-col overflow-hidden">
-                <ChatHomePage />
-              </PageTransition>
-            ) : (
-              <PageTransition key="main-layout" className="flex flex-1 min-w-0 flex-col overflow-hidden">
-                <ErrorBoundary renderFallback={(error, reset) => (
-                  <div className="flex flex-1 flex-col items-center justify-center gap-4 p-8 text-center overflow-hidden">
-                    <div className="flex size-12 items-center justify-center rounded-full bg-destructive/10">
-                      <svg className="size-6 text-destructive" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                        <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126ZM12 15.75h.007v.008H12v-.008Z" />
-                      </svg>
+            {/* Main content area (hidden when Telnet/SSH page is active) */}
+            {!telnetPageOpen && !sshPageOpen && (
+            <AnimatePresence mode="wait">
+              {skillsPageOpen ? (
+                <PageTransition key="skills-page" className="flex-1 min-w-0 bg-background overflow-hidden">
+                  <SkillsPage />
+                </PageTransition>
+              ) : settingsPageOpen ? (
+                <PageTransition key="settings-page" className="flex-1 min-w-0 bg-background overflow-hidden">
+                  <SettingsPage />
+                </PageTransition>
+              ) : translatePageOpen ? (
+                <PageTransition key="translate-page" className="flex-1 min-w-0 bg-background overflow-hidden">
+                  <TranslatePage />
+                </PageTransition>
+              ) : chatView === 'home' ? (
+                <PageTransition key="chat-home" className="flex flex-1 min-w-0 flex-col overflow-hidden">
+                  <ChatHomePage />
+                </PageTransition>
+              ) : (
+                <PageTransition key="main-layout" className="flex flex-1 min-w-0 flex-col overflow-hidden">
+                  <ErrorBoundary renderFallback={(error, reset) => (
+                    <div className="flex flex-1 flex-col items-center justify-center gap-4 p-8 text-center overflow-hidden">
+                      <div className="flex size-12 items-center justify-center rounded-full bg-destructive/10">
+                        <svg className="size-6 text-destructive" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                          <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126ZM12 15.75h.007v.008H12v-.008Z" />
+                        </svg>
+                      </div>
+                      <div className="space-y-1">
+                        <h3 className="text-sm font-semibold text-foreground">{t('layout.somethingWentWrong')}</h3>
+                        <p className="max-w-md text-xs text-muted-foreground">{error?.message || t('layout.unexpectedError')}</p>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <button
+                          className="rounded-md bg-primary px-3 py-1.5 text-xs font-medium text-primary-foreground hover:bg-primary/90 transition-colors"
+                          onClick={reset}
+                        >
+                          {t('layout.tryAgain')}
+                        </button>
+                        <button
+                          className="rounded-md border px-3 py-1.5 text-xs font-medium text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
+                          onClick={() => window.location.reload()}
+                        >
+                          {t('layout.reloadApp')}
+                        </button>
+                        <button
+                          className="rounded-md border px-3 py-1.5 text-xs font-medium text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
+                          onClick={() => {
+                            const text = `Error: ${error?.message}\nStack: ${error?.stack}`
+                            navigator.clipboard.writeText(text)
+                          }}
+                        >
+                          {t('layout.copyError')}
+                        </button>
+                      </div>
+                      {error?.stack && (
+                        <details className="w-full max-w-lg text-left">
+                          <summary className="cursor-pointer text-[10px] text-muted-foreground hover:text-foreground transition-colors">{t('layout.errorDetails')}</summary>
+                          <pre className="mt-1 max-h-32 overflow-auto rounded-md bg-muted p-2 text-[10px] leading-relaxed text-muted-foreground">{error.stack}</pre>
+                        </details>
+                      )}
                     </div>
-                    <div className="space-y-1">
-                      <h3 className="text-sm font-semibold text-foreground">{t('layout.somethingWentWrong')}</h3>
-                      <p className="max-w-md text-xs text-muted-foreground">{error?.message || t('layout.unexpectedError')}</p>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <button
-                        className="rounded-md bg-primary px-3 py-1.5 text-xs font-medium text-primary-foreground hover:bg-primary/90 transition-colors"
-                        onClick={reset}
-                      >
-                        {t('layout.tryAgain')}
-                      </button>
-                      <button
-                        className="rounded-md border px-3 py-1.5 text-xs font-medium text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
-                        onClick={() => window.location.reload()}
-                      >
-                        {t('layout.reloadApp')}
-                      </button>
-                      <button
-                        className="rounded-md border px-3 py-1.5 text-xs font-medium text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
-                        onClick={() => {
-                          const text = `Error: ${error?.message}\nStack: ${error?.stack}`
-                          navigator.clipboard.writeText(text)
-                        }}
-                      >
-                        {t('layout.copyError')}
-                      </button>
-                    </div>
-                    {error?.stack && (
-                      <details className="w-full max-w-lg text-left">
-                        <summary className="cursor-pointer text-[10px] text-muted-foreground hover:text-foreground transition-colors">{t('layout.errorDetails')}</summary>
-                        <pre className="mt-1 max-h-32 overflow-auto rounded-md bg-muted p-2 text-[10px] leading-relaxed text-muted-foreground">{error.stack}</pre>
-                      </details>
-                    )}
-                  </div>
-                )}>
+                  )}>
                   <div className="flex flex-1 overflow-hidden">
                     {/* Center: Chat Area */}
                     <div
@@ -1019,11 +1030,12 @@ export function Layout(): React.JSX.Element {
                       )}
                     </AnimatePresence>
                   </div>
-                </ErrorBoundary>
-              </PageTransition>
+                  </ErrorBoundary>
+                </PageTransition>
+              )}
+            </AnimatePresence>
             )}
-          </AnimatePresence>
-          )}
+          </div>
         </div>
       </div>
 

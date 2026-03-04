@@ -29,7 +29,9 @@
       "WebFetch(domain:skillsmp.com)",
       "WebFetch(domain:www.skillsmp.com)",
       "WebFetch(domain:api.skillsmp.com)",
-      "Bash(test:*)"
+      "Bash(test:*)",
+      "Bash(git commit:*)",
+      "Bash(git tag:*)"
     ]
   }
 }
